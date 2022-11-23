@@ -4,6 +4,7 @@ const Bodies = Matter.Bodies;
 const Constraint = Matter.Constraint;
 var engine, world;
 var canvas, angle, tower, ground, cannon,cannonBall;
+var balls = [];
 
 
 
@@ -23,7 +24,7 @@ function setup() {
   tower = new Tower(150, 350, 160, 310);
   cannon = new Cannon(180, 110, 100, 50, angle);
 //crie um objeto para bala de canhão
-  cannonBall = new CannonBall(cannon.x,cannon.y);
+  //cannonBall = new CannonBall(cannon.x,cannon.y);
 }
 
 function draw() {
@@ -35,11 +36,15 @@ function draw() {
   Engine.update(engine);
   ground.display();
   
+  for (var i = 0; i< balls.length; i++){
+    showCannonBalls(balls[i],i);
+    
+  }
 
   cannon.display();
   tower.display();
 //exibir a bala de canhão 
-  cannonBall.display();
+  //cannonBall.display();
   //keyReleased();
 }
 
@@ -51,6 +56,19 @@ function draw() {
 function keyReleased() {
  //use keydown para chamar a função de disparo
  if (keyCode ==DOWN_ARROW) {
-  cannonBall.shoot();
+  balls[balls.length - 1].shoot();
  }
+}
+function keyPressed(){
+  if (keyCode === DOWN_ARROW){
+    cannonBall = new CannonBall(cannon.x,cannon.y);
+    balls.push(cannonBall);
+  }
+}
+function showCannonBalls(ball,index){
+  ball.display();
+  if (ball.body.position.x >= width || ball.body.position.y >= height - 50){
+    Matter.World.remove(world,ball.body);
+    balls.splice(index,1);
+  }
 }
