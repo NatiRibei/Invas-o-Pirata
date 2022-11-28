@@ -23,8 +23,10 @@ function setup() {
   ground = new Ground(0, height - 1, width * 2, 1);
   tower = new Tower(150, 350, 160, 310);
   cannon = new Cannon(180, 110, 100, 50, angle);
-//crie um objeto para bala de canhão
+  //crie um objeto para bala de canhão
   //cannonBall = new CannonBall(cannon.x,cannon.y);
+
+  boat = new Boat(width, height - 100, 200, 200, -100);
 }
 
 function draw() {
@@ -35,15 +37,21 @@ function draw() {
 
   Engine.update(engine);
   ground.display();
+
+  Matter.Body.setVelocity(boat.body, {
+    x: -0.9,
+    y: 0
+  });
   
   for (var i = 0; i< balls.length; i++){
     showCannonBalls(balls[i],i);
     
   }
 
+  boat.display();
   cannon.display();
   tower.display();
-//exibir a bala de canhão 
+  //exibir a bala de canhão 
   //cannonBall.display();
   //keyReleased();
 }
